@@ -1,6 +1,7 @@
 package bootdemo.utils;
 
 import bootdemo.entity.Result;
+import bootdemo.entity.ResultCode;
 
 /**
  * Created by David on 2017/5/18.
@@ -16,10 +17,11 @@ public class ResultUtils {
         return result;
     }
 
+
     public static Result getSuccessResult(Object object){
         Result result = new Result();
-        result.setCode(1);
-        result.setResult("成功!");
+        result.setCode(ResultCode.SUC);
+        result.setResult("成功");
         result.setData(object);
         return result;
     }

@@ -5,10 +5,10 @@ import bootdemo.entity.Account;
 import bootdemo.entity.Result;
 import bootdemo.exception.ResultException;
 import bootdemo.properties.GirlProperties;
+import bootdemo.service.AccountService;
 import bootdemo.utils.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,15 +20,16 @@ import java.util.List;
 @RestController
 @EnableConfigurationProperties({GirlProperties.class})
 @RequestMapping("/account")
-public class HelloController {
+public class AccountController {
 
 
     @Autowired
     @Qualifier(value = "girl")
     private GirlProperties property;
 
+
     @Autowired
-    AccountDao accountDao;
+    AccountService accountService;
 
     @RequestMapping(value = {"/hello"},method = RequestMethod.GET)
     public String say(){
@@ -37,26 +38,19 @@ public class HelloController {
 
     @RequestMapping(value = "",method = RequestMethod.GET)
     public Result postAccount(Account account) throws Exception{
-        if(account.getMoney() >1000){
-            throw new ResultException(2,"金额太大");
-        }
-        account.setMoney(account.getMoney());
-        account.setName(account.getName());
-        Account account1 = accountDao.save(account);
-        return ResultUtils.getSuccessResult(account1);
+        return ResultUtils.getSuccessResult(accountService.saveAccount(account));
     }
 
     @RequestMapping(value = "{id}",method = RequestMethod.GET)
     public Result updateAccount(@PathVariable(value = "id") int id, @RequestParam(value = "name") String name){
         Account account = new Account();
+        account.setId(id);
         account.setName(name);
-        Account account1 = accountDao.saveAndFlush(account);
-        return ResultUtils.getSuccessResult(account1);
+        return ResultUtils.getSuccessResult(accountService.updateAccount(account));
     }
 
     @RequestMapping(value = "list",method = RequestMethod.GET)
     public Result getAllAccount(){
-        List<Account> accountList = accountDao.findAll();
-        return ResultUtils.getSuccessResult(accountList);
+        return ResultUtils.getSuccessResult(accountService.getAllAccount());
     }
 }
