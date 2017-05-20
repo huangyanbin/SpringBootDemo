@@ -1,8 +1,10 @@
 package bootdemo.hanlder;
 
+import bootdemo.config.RedisConfig;
 import bootdemo.entity.Result;
 import bootdemo.exception.ResultException;
 import bootdemo.utils.ResultUtils;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @ControllerAdvice
 public class ExceptionHandle {
-
+    private static Logger logger = Logger.getLogger(ExceptionHandle.class);
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result handle(Exception e){
@@ -21,6 +23,7 @@ public class ExceptionHandle {
             ResultException resultException = (ResultException) e;
             return ResultUtils.getErrorResult(resultException.code,resultException.getMessage());
         }
-        return ResultUtils.getErrorResult(-1,"未知错误");
+        logger.error(e.getCause()+e.getMessage());
+        return ResultUtils.getErrorResult(-1,e.getMessage());
     }
 }

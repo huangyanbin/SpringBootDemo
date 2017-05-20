@@ -1,0 +1,11 @@
+一. windows redis
+                                       https://github.com/MSOpenTech/redis 下载 release msi
+                                       点击安装，
+                                       1. Redis-cli.exe
+                                       2. shutdown
+                                       3. exit
+                                       4. redis-server.exe redis.windows.conf
+                                       打开
+                                       redis-cli.exe保存检查
+                                       以管理员打开 redis-server.exe
+                                       地址为：127.0.0.1
