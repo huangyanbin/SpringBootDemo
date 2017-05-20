@@ -5,17 +5,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 /**
- * Created by David on 2017/5/19.
+ * Created by huang on 2017/5/19.
  */
 @Entity
+@Table(name = "myOrder")
 public class Order {
+
     @Id
     @GeneratedValue
     private int id;
     private String name;
     @JsonIgnore
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "sid",referencedColumnName="id")
+    @ManyToOne
+    @JoinColumn(name = "sid")
     private Student student;
 
     public int getId() {

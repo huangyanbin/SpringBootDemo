@@ -1,12 +1,10 @@
 package bootdemo.service;
 
+import bootdemo.dao.CardDao;
 import bootdemo.dao.OrderDao;
 import bootdemo.dao.StudentDao;
 import bootdemo.dao.TeacherDao;
-import bootdemo.entity.Order;
-import bootdemo.entity.ResultCode;
-import bootdemo.entity.Student;
-import bootdemo.entity.Teacher;
+import bootdemo.entity.*;
 import bootdemo.exception.ResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +28,9 @@ public class StudentService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private CardDao cardDao;
+
 
 
     public Student addStudent(Student student,int tid)throws Exception{
@@ -44,8 +45,10 @@ public class StudentService {
     }
 
     public Order addOrder(Order order, int sId)throws Exception{
-        Student student = studentDao.findOne(sId);
-        if(student == null){
+        Student student;
+        try {
+            student = studentDao.findOne(sId);
+        }catch (Exception e){
             throw new ResultException(ResultCode.INSERT_ERROR,"没有找到该学生");
         }
         order.setStudent(student);
@@ -54,6 +57,10 @@ public class StudentService {
 
     public Student findStudent(int id)throws Exception{
         return studentDao.findOne(id);
+    }
+
+    public Student findStudent(String name)throws Exception{
+        return studentDao.findByName(name);
     }
 
     public Teacher findTeacher(int id)throws Exception{
@@ -66,5 +73,12 @@ public class StudentService {
 
     public Teacher addTeacher(Teacher teacher)throws Exception{
         return teacherDao.save(teacher);
+    }
+
+    public CardID addCard(int sid)throws Exception{
+        Student student = findStudent(sid);
+        CardID cardID = new CardID();
+        cardID.setStudent(student);
+        return cardDao.save(cardID);
     }
 }

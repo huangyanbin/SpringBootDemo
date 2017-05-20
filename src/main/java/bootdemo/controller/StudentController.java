@@ -26,14 +26,21 @@ public class StudentController {
         return ResultUtils.getSuccessResult(studentService.addStudent(student,tid));
     }
 
+
+
     @RequestMapping(value = {"/teacher/add"}, method = RequestMethod.GET)
     public Result addTeacher(Teacher teacher)throws Exception {
         return ResultUtils.getSuccessResult(studentService.addTeacher(teacher));
     }
 
     @RequestMapping(value = {"/order/add"}, method = RequestMethod.GET)
-    public Result addOrder(Order order,@RequestParam(value = "sid") int sid)throws Exception {
+    public Result addOrder(Order order, @RequestParam(value = "sid") int sid)throws Exception {
         return ResultUtils.getSuccessResult(studentService.addOrder(order,sid));
+    }
+
+    @RequestMapping(value = {"/card/add"}, method = RequestMethod.GET)
+    public Result addCard(@RequestParam(value = "sid") int sid)throws Exception {
+        return ResultUtils.getSuccessResult(studentService.addCard(sid));
     }
 
     @RequestMapping(value = {"/teacher/find"}, method = RequestMethod.GET)
@@ -44,6 +51,11 @@ public class StudentController {
     @RequestMapping(value = {"/student/find"}, method = RequestMethod.GET)
     public Result findStudent(@RequestParam(value = "id") int id)throws Exception {
         return ResultUtils.getSuccessResult(studentService.findStudent(id));
+    }
+
+    @RequestMapping(value = {"/student/findByName"}, method = RequestMethod.GET)
+    public Result findStudentByName(@RequestParam(value = "name") String name)throws Exception {
+        return ResultUtils.getSuccessResult(studentService.findStudent(name));
     }
 
     @RequestMapping(value = {"/order/find"}, method = RequestMethod.GET)

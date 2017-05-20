@@ -21,13 +21,15 @@ public class Student {
     private String name;
     private int age;
     @JsonIgnore
-    @ManyToMany(cascade ={CascadeType.MERGE,CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "student_teacher"
-    ,joinColumns = @JoinColumn(name = "sid")
-    ,inverseJoinColumns = @JoinColumn(name = "tid"))
+            , joinColumns = @JoinColumn(name = "sid")
+            , inverseJoinColumns = @JoinColumn(name = "tid"))
     private Set<Teacher> teachers;
-    @OneToMany(mappedBy = "student",cascade={CascadeType.ALL})
+    @OneToMany(mappedBy = "student")
     private Set<Order> orders;
+    @OneToOne(mappedBy = "student")
+    private CardID cardID;
 
     public int getId() {
         return id;
@@ -67,5 +69,13 @@ public class Student {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    public CardID getCardID() {
+        return cardID;
+    }
+
+    public void setCardID(CardID cardID) {
+        this.cardID = cardID;
     }
 }
