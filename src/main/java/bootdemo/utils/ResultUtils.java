@@ -9,7 +9,7 @@ import bootdemo.entity.ResultCode;
 public class ResultUtils {
 
 
-    public static Result getErrorResult(int code,String msg){
+    public static Result getErrorResult(int code, String msg){
         Result result = new Result();
         result.setCode(code);
         result.setResult(msg);

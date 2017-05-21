@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class HttpAspect {
 
     private final static Logger logger = LoggerFactory.getLogger(HttpAspect.class);
-    @Pointcut("execution(public  * bootdemo.controller.AccountController.*(..))")
+    @Pointcut("execution(public  * bootdemo.controller.ArticleController.*(..))")
     public void log(){
     }
 

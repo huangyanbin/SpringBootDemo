@@ -1,6 +1,5 @@
 package bootdemo.hanlder;
 
-import bootdemo.config.RedisConfig;
 import bootdemo.entity.Result;
 import bootdemo.exception.ResultException;
 import bootdemo.utils.ResultUtils;
