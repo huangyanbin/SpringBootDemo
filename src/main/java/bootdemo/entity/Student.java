@@ -2,19 +2,18 @@ package bootdemo.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Created by David on 2017/5/19.
  */
 @Entity
-public class Student {
+public class Student implements Serializable {
 
+    private static final long serialVersionUID = 7303178895056191860L;
     @Id
     @GeneratedValue
     private int id;
@@ -26,7 +25,7 @@ public class Student {
             , joinColumns = @JoinColumn(name = "sid")
             , inverseJoinColumns = @JoinColumn(name = "tid"))
     private Set<Teacher> teachers;
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Order> orders;
     @OneToOne(mappedBy = "student")
     private CardID cardID;

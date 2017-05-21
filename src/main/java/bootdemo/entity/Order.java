@@ -3,20 +3,22 @@ package bootdemo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by huang on 2017/5/19.
  */
 @Entity
 @Table(name = "myOrder")
-public class Order {
+public class Order implements Serializable {
 
+    private static final long serialVersionUID = -1815918688795381802L;
     @Id
     @GeneratedValue
     private int id;
     private String name;
+    @ManyToOne(cascade =CascadeType.ALL,optional = false,fetch = FetchType.LAZY)
     @JsonIgnore
-    @ManyToOne
     @JoinColumn(name = "sid")
     private Student student;
 

@@ -1,15 +1,16 @@
 package bootdemo.entity;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Created by David on 2017/5/19.
  */
 @Entity
-public class Teacher {
+public class Teacher implements Serializable{
 
+    private static final long serialVersionUID = 8767102407432935440L;
     @Id
     @GeneratedValue
     private int id;

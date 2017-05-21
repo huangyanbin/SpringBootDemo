@@ -13,18 +13,35 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import redis.clients.jedis.JedisPoolConfig;
 
 
 
 @Configuration
 @EnableAutoConfiguration
-public class RedisConfig {
+@EnableCaching
+public class RedisConfig extends CachingConfigurerSupport{
 
 
+    /**
+     * 生成缓存规则
+     * @return
+     */
+    @Bean
+    public KeyGenerator wiselyKeyGenerator(){
+        return (target, method, objects) -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append(target.getClass().getName());
+            sb.append(method.getName());
+            for(Object o :objects){
+                sb.append(o.toString());
+            }
+            return sb.toString();
+        };
+    }
 
     @Bean
     @ConfigurationProperties(prefix = "spring.redis")
@@ -43,7 +60,13 @@ public class RedisConfig {
 
    @Bean
     public RedisTemplate<?,?> getRedisTemplate(){
-        RedisTemplate<?,?> template = new StringRedisTemplate(getConnectionFactory());
+        RedisTemplate<?,?> template = new RedisTemplate<>();
+        template.setConnectionFactory(getConnectionFactory());
         return template;
+   }
+
+   @Bean
+   public CacheManager cacheManager(RedisTemplate redisTemplate){
+       return new RedisCacheManager(redisTemplate);
    }
 }

@@ -7,6 +7,8 @@ import bootdemo.dao.TeacherDao;
 import bootdemo.entity.*;
 import bootdemo.exception.ResultException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -32,7 +34,7 @@ public class StudentService {
     private CardDao cardDao;
 
 
-
+    @CacheEvict(value = {"findStudent","findStudentByName"},allEntries = true)
     public Student addStudent(Student student,int tid)throws Exception{
         Teacher teacher = teacherDao.findOne(tid);
         if(teacher == null){
@@ -55,26 +57,28 @@ public class StudentService {
         return orderDao.save(order);
     }
 
+    @Cacheable(value = "findStudent")
     public Student findStudent(int id)throws Exception{
         return studentDao.findOne(id);
     }
-
+    @Cacheable(value = "findStudentByName")
     public Student findStudent(String name)throws Exception{
         return studentDao.findByName(name);
     }
 
+    @Cacheable(value = "findTeacher")
     public Teacher findTeacher(int id)throws Exception{
         return teacherDao.findOne(id);
     }
-
+    @Cacheable(value = "findOrder")
     public Order findOrder(int id)throws Exception{
         return orderDao.findOne(id);
     }
-
+    @CacheEvict(value = "findTeacher",allEntries = true)
     public Teacher addTeacher(Teacher teacher)throws Exception{
         return teacherDao.save(teacher);
     }
-
+    @CacheEvict(value = {"findStudent","findStudentByName"},allEntries = true)
     public CardID addCard(int sid)throws Exception{
         Student student = findStudent(sid);
         CardID cardID = new CardID();
