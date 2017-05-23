@@ -6,9 +6,11 @@ import bootdemo.entity.User;
 import bootdemo.exception.ResultException;
 import bootdemo.utils.AESUtils;
 import bootdemo.utils.PatternUtils;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.Date;
 import java.util.List;
@@ -68,7 +70,8 @@ public class UserService {
         return  userMapper.findSecretKey(userName);
     }
 
-    public List<User>  findAll(){
+    public List<User>  getUserList(int pageNum,int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
         return userMapper.queryAll();
     }
 

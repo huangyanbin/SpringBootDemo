@@ -8,6 +8,7 @@ import bootdemo.entity.ArticleType;
 import bootdemo.entity.ResultCode;
 import bootdemo.entity.User;
 import bootdemo.exception.ResultException;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -29,9 +30,9 @@ public class ArticleService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<Article> getAllArticles(){
-       List<Article> articles =  articleMapper.queryAll();
-       return articles;
+    public List<Article> getAllArticles(int pageNum,int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        return  articleMapper.queryAll();
     }
 
     public Article saveArticle(Article article,String userName,int typeId)throws Exception{
@@ -64,7 +65,8 @@ public class ArticleService {
         return articleType;
     }
 
-    public List<ArticleType> getAllArticleType(){
-     return articleTypeMapper.queryAll();
+    public List<ArticleType> getAllArticleType(int pageNum,int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        return articleTypeMapper.queryAll();
     }
 }

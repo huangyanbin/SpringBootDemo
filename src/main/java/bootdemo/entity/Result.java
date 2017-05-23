@@ -1,8 +1,11 @@
 package bootdemo.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /**
  * Created by David on 2017/5/18.
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Result<T> {
 
     private int code;

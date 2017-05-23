@@ -5,10 +5,7 @@ import bootdemo.entity.User;
 import bootdemo.service.UserService;
 import bootdemo.utils.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by huang on 2017/5/21.
@@ -37,8 +34,8 @@ public class UserController {
         return ResultUtils.getSuccessResult(service.update(user));
     }
 
-    @RequestMapping(value = "all",method = RequestMethod.GET)
-    public Result getAll() throws Exception{
-        return ResultUtils.getSuccessResult(service.findAll());
+    @RequestMapping(value = "list/{pageNum}/{pageSize}",method = RequestMethod.GET)
+    public Result getUserList(@PathVariable int pageNum,@PathVariable int pageSize) throws Exception{
+        return ResultUtils.getSuccessResult(service.getUserList(pageNum,pageSize));
     }
 }

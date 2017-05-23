@@ -101,3 +101,4 @@ DROP TABLE IF EXISTS User;
 alter table user add COLUMN secretKey VARCHAR(100);
 select count(*) from tab_follow where followingUid=1 and followedUid=2;
 alter table tab_follow rename FOLLOW;
+alter table fav drop column uid;

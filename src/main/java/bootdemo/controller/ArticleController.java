@@ -6,6 +6,7 @@ import bootdemo.entity.Result;
 import bootdemo.service.ArticleService;
 import bootdemo.utils.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +21,9 @@ public class ArticleController {
     @Autowired
     ArticleService service;
 
-    @RequestMapping(value = "all")
-    public Result getAllArticles(){
-        return ResultUtils.getSuccessResult(service.getAllArticles());
+    @RequestMapping(value = "list/{pageNum}/{pageSize}")
+    public Result getAllArticles(@PathVariable int pageNum,@PathVariable int pageSize){
+        return ResultUtils.getSuccessResult(service.getAllArticles(pageNum,pageSize));
     }
 
     @RequestMapping(value = "add")
@@ -30,9 +31,9 @@ public class ArticleController {
         return ResultUtils.getSuccessResult(service.saveArticle(article,userName,typeId));
     }
 
-    @RequestMapping(value = "type/all")
-    public Result getAllArticlesType(){
-        return ResultUtils.getSuccessResult(service.getAllArticleType());
+    @RequestMapping(value = "type/list/{pageNum}/{pageSize}")
+    public Result getAllArticlesType(@PathVariable int pageNum, @PathVariable int pageSize){
+        return ResultUtils.getSuccessResult(service.getAllArticleType(pageNum,pageSize));
     }
 
     @RequestMapping(value = "type/add")

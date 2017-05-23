@@ -1,16 +1,18 @@
 package bootdemo.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.sql.Date;
 
 /**
  * Created by David on 2017/5/23.
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Fav {
 
     private int id ;
-    private int uid ;
-    private int articleID ;
-    private int typeID;
+    private Article article;
+    private FavType type;
     private Date favTime ;
 
     public int getId() {
@@ -21,28 +23,20 @@ public class Fav {
         this.id = id;
     }
 
-    public int getUid() {
-        return uid;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
-    public int getArticleID() {
-        return articleID;
+    public FavType getType() {
+        return type;
     }
 
-    public void setArticleID(int articleID) {
-        this.articleID = articleID;
-    }
-
-    public int getTypeID() {
-        return typeID;
-    }
-
-    public void setTypeID(int typeID) {
-        this.typeID = typeID;
+    public void setType(FavType type) {
+        this.type = type;
     }
 
     public Date getFavTime() {

@@ -22,7 +22,6 @@ public interface ArticleMapper {
 
     @Select("select * from article")
     @ResultMap("articleResult")
-    @Results
     List<Article> queryAll();
     @Insert("insert into article(uid,title,url,icon,content,createTime,typeID) value (#{user.id},#{title},#{url},#{icon},#{content},#{createTime},#{type.id})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
@@ -31,9 +30,9 @@ public interface ArticleMapper {
     @Select("select * from Article where title like '%${title}%'")
     List<Article> findArticleByName(String title);
 
-    @Select("select * from article where id =#{id}'")
+    @Select("select * from article where id =#{id}")
     @ResultMap("articleResult")
-    Article findArticleByID(@Param("id")int id);
+    Article findById(@Param("id")int id);
 
 
 
