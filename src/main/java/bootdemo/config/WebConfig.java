@@ -1,0 +1,31 @@
+package bootdemo.config;
+
+import bootdemo.interceptor.LoginInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+/**
+ * Created by David on 2017/5/23.
+ */
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = "bootdemo")
+@PropertySource(value = "classpath:application.properties",
+        ignoreResourceNotFound = true,encoding = "UTF-8")
+public class WebConfig extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    private LoginInterceptor interceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        super.addInterceptors(registry);
+        registry.addInterceptor(interceptor)
+                .addPathPatterns("/user/update");
+    }
+}
