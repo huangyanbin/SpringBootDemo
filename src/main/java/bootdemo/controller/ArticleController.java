@@ -22,13 +22,13 @@ public class ArticleController {
     ArticleService service;
 
     @RequestMapping(value = "list/{pageNum}/{pageSize}")
-    public Result getAllArticles(@PathVariable int pageNum,@PathVariable int pageSize){
-        return ResultUtils.getSuccessResult(service.getAllArticles(pageNum,pageSize));
+    public Result getAllArticles(@PathVariable int pageNum,@PathVariable int pageSize,@RequestParam(value ="uid")int uid){
+        return ResultUtils.getSuccessResult(service.getAllArticles(pageNum,pageSize,uid));
     }
 
     @RequestMapping(value = "add")
-    public Result addArticle(Article article, @RequestParam(value = "userName")String userName,@RequestParam(value = "typeId") int  typeId) throws Exception{
-        return ResultUtils.getSuccessResult(service.saveArticle(article,userName,typeId));
+    public Result addArticle(Article article, @RequestParam(value = "uid")int uid,@RequestParam(value = "typeId") int  typeId) throws Exception{
+        return ResultUtils.getSuccessResult(service.saveArticle(article,uid,typeId));
     }
 
     @RequestMapping(value = "type/list/{pageNum}/{pageSize}")

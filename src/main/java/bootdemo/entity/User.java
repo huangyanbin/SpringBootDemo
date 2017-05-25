@@ -2,14 +2,16 @@ package bootdemo.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by David on 2017/5/23.
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-public class User {
+public class User implements Serializable {
 
+    private static final long serialVersionUID = -1884520153237897096L;
     private int id ;
     private String userName;
     private String nickName;

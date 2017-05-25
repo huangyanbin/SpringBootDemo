@@ -9,13 +9,13 @@ import java.util.Date;
  * Created by David on 2017/5/23.
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-public class Fav implements Serializable{
+public class TCollection implements Serializable{
 
-    private static final long serialVersionUID = 9157293006229856113L;
+    private static final long serialVersionUID = 2991955077675117002L;
     private int id ;
     private Article article;
-    private User user;
-    private Date favTime ;
+    private CollectionType type;
+    private Date collectionTime ;
 
     public int getId() {
         return id;
@@ -33,19 +33,19 @@ public class Fav implements Serializable{
         this.article = article;
     }
 
-    public Date getFavTime() {
-        return favTime;
+    public CollectionType getType() {
+        return type;
     }
 
-    public void setFavTime(Date favTime) {
-        this.favTime = favTime;
+    public void setType(CollectionType type) {
+        this.type = type;
     }
 
-    public User getUser() {
-        return user;
+    public Date getCollectionTime() {
+        return collectionTime;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCollectionTime(Date collectionTime) {
+        this.collectionTime = collectionTime;
     }
 }

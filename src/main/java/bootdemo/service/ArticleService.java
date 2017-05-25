@@ -1,19 +1,16 @@
 package bootdemo.service;
 
-import bootdemo.dao.ArticleMapper;
-import bootdemo.dao.ArticleTypeMapper;
-import bootdemo.dao.UserMapper;
-import bootdemo.entity.Article;
-import bootdemo.entity.ArticleType;
-import bootdemo.entity.ResultCode;
-import bootdemo.entity.User;
+import bootdemo.dao.*;
+import bootdemo.entity.*;
 import bootdemo.exception.ResultException;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,28 +27,40 @@ public class ArticleService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<Article> getAllArticles(int pageNum,int pageSize){
+    @Autowired
+    private FavMapper favMapper;
+
+    @Autowired
+    private CommentMapper commentMapper;
+    @Cacheable(value = "getAllArticles")
+    public List<Article> getAllArticles(int pageNum,int pageSize,int uid){
         PageHelper.startPage(pageNum,pageSize);
-        return  articleMapper.queryAll();
+        List<Article> articles =  articleMapper.queryAll();
+         for (Article article :articles){
+            int favCount = favMapper.getFavCountByarticleId(article.getId());
+            article.setFavCount(favCount);
+            //只获取第一页的数据
+            int commentCount = commentMapper.getCommentCountByArticleId(article.getId());
+             PageHelper.startPage(1,2); //test
+             List<Comment> comments = commentMapper.getCommentByArticleId(article.getId());
+             article.setCommentCount(commentCount);
+             article.setComments(comments);
+             article.setLike(favMapper.checkFavByUid(uid,article.getId()));
+         }
+         return articles;
     }
-
-    public Article saveArticle(Article article,String userName,int typeId)throws Exception{
-
+    @CacheEvict(value = "getAllArticles",allEntries = true)
+    public Article saveArticle(Article article,int uid,int typeId)throws Exception{
+        checkUid(uid);
         if(StringUtils.isEmpty(article.getTitle())){
             throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"文章标题不能为空！");
-        }
-        int count = userMapper.isCheckUserName(userName);
-        if(count == 0){
-            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该用户！");
         }
         ArticleType articleType = articleTypeMapper.findById(typeId);
         if(articleType == null){
             throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该文章分类！");
         }
-        User user = userMapper.findByUserName(userName);
         article.setType(articleType);
         article.setCreateTime(new Date(System.currentTimeMillis()));
-        article.setUser(user);
         articleMapper.save(article);
         return article;
     }
@@ -69,4 +78,12 @@ public class ArticleService {
         PageHelper.startPage(pageNum,pageSize);
         return articleTypeMapper.queryAll();
     }
+    private void checkUid(int uid) throws Exception{
+
+        int count = userMapper.isCheckUserID(uid);
+        if (count == 0){
+            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该用户");
+        }
+    }
+
 }

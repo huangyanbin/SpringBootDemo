@@ -46,7 +46,7 @@ create TABLE ARTICLE(
   FOREIGN KEY (typeID) REFERENCES ArticleType(id)
 );
 #收藏集
-CREATE TABLE FavType(
+CREATE TABLE CollectionType(
   id INT PRIMARY KEY AUTO_INCREMENT,
   uid INT,
   type VARCHAR(100),
@@ -54,17 +54,26 @@ CREATE TABLE FavType(
   FOREIGN KEY (uid) REFERENCES User(id)
 );
 
+#收藏
+CREATE TABLE tab_Collection(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  articleID INT,
+  typeID INT,
+  CollectionTime DATE,
+  FOREIGN KEY (articleID) REFERENCES ARTICLE(id),
+  FOREIGN KEY (typeID) REFERENCES CollectionType(id)
+);
+
 #喜欢
-CREATE TABLE FAV(
+CREATE TABLE Fav(
   id INT PRIMARY KEY AUTO_INCREMENT,
   uid INT,
   articleID INT,
-  typeID INT,
   favTime DATE,
   FOREIGN KEY (uid) REFERENCES User(id),
-  FOREIGN KEY (articleID) REFERENCES ARTICLE(id),
-  FOREIGN KEY (typeID) REFERENCES FavType(id)
+  FOREIGN KEY (articleID) REFERENCES ARTICLE(id)
 );
+
 
 #分享
 CREATE TABLE SHARE(
@@ -102,3 +111,5 @@ alter table user add COLUMN secretKey VARCHAR(100);
 select count(*) from tab_follow where followingUid=1 and followedUid=2;
 alter table tab_follow rename FOLLOW;
 alter table fav drop column uid;
+alter table fav rename Collection;
+alter table Collection rename tab_Collection;

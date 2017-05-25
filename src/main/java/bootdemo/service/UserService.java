@@ -10,9 +10,8 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,9 +64,9 @@ public class UserService {
         return 1;
     }
 
-    public String getSecretKey(String userName){
+    public String getSecretKey(int uid){
 
-        return  userMapper.findSecretKey(userName);
+        return  userMapper.findSecretKey(uid);
     }
 
     public List<User>  getUserList(int pageNum,int pageSize){

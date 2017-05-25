@@ -37,6 +37,9 @@ public interface UserMapper {
     @Select("select id, userName,nickName,icon,position,company,intro,address from user where userName=#{userName}")
     User findByUserName(String userName);
 
+    @Select("select id from user where userName=#{userName}")
+    int findIdByUserName(String userName);
+
     @Select("select count(userName) from user where userName=#{userName}")
     int isCheckUserName(String userName);
 
@@ -53,8 +56,8 @@ public interface UserMapper {
     @Update("update user set secretKey=#{secretKey} where userName=#{userName}")
     int updateSecretKey(@Param("userName") String userName,@Param("secretKey") String secretKey);
 
-    @Select("select secretKey from user where userName=#{userName}")
-    String findSecretKey(String userName);
+    @Select("select secretKey from user where id=#{id}")
+    String findSecretKey(@Param("id")int id);
 
 
     @Select("select id,userName,nickName,icon,position,company,intro,address from user where id=#{id}")

@@ -2,16 +2,18 @@ package bootdemo.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by David on 2017/5/23.
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-public class FavType {
+public class CollectionType implements Serializable {
 
+    private static final long serialVersionUID = 2479046098447398530L;
     private int id;
-    private int uid;
+    private User user;
     private String type;
     private Date createTime;
 
@@ -23,12 +25,12 @@ public class FavType {
         this.id = id;
     }
 
-    public int getUid() {
-        return uid;
+    public User getUser() {
+        return user;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getType() {

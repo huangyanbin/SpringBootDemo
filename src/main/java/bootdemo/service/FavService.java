@@ -1,7 +1,6 @@
 package bootdemo.service;
 
 import bootdemo.dao.ArticleMapper;
-import bootdemo.dao.ArticleTypeMapper;
 import bootdemo.dao.FavMapper;
 import bootdemo.dao.UserMapper;
 import bootdemo.entity.*;
@@ -9,9 +8,9 @@ import bootdemo.exception.ResultException;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,48 +29,64 @@ public class FavService {
     private ArticleMapper articleMapper;
 
 
-    public FavType saveFavType(String userName,String favTypeName)throws Exception{
-        User user = userMapper.findByUserName(userName);
-        if (user == null){
-            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该用户");
-        }
-        FavType favType = new FavType();
-        favType.setCreateTime(new Date(System.currentTimeMillis()));
-        favType.setUid(user.getId());
-        favType.setType(favTypeName);
-        favMapper.saveFavType(favType);
-        return favType;
-    }
-
-    public Fav saveFav(int favTypeID,int articleId)throws Exception{
-        FavType favType = favMapper.findTypeById(favTypeID);
-        if(favType == null){
-            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该收藏集");
-        }
+    public Fav saveFav(int uid,int articleId)throws Exception{
+        checkUid(uid);
         Article article = articleMapper.findById(articleId);
         if(article == null){
             throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该文章");
         }
+        if(isCheckFav(uid,articleId)){
+            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"您已经收藏了");
+        }
         Fav fav = new Fav();
         fav.setFavTime(new Date(System.currentTimeMillis()));
-        fav.setType(favType);
         fav.setArticle(article);
-
         favMapper.saveFav(fav);
         return fav;
     }
 
-  public List<Fav> getFavByTypeID(int pageNum,int pageSize,int favTypeID)throws Exception {
-      PageHelper.startPage(pageNum,pageSize);
-      return favMapper.findFavesByType(favTypeID);
-  }
-    public List<FavType> getFavTypeByUserName(String userName)throws Exception {
-        User user = userMapper.findByUserName(userName);
-        if (user == null){
-            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该用户");
+    public int deleteFav(int uid,int articleId)throws Exception{
+        checkUid(uid);
+        if(!isCheckFav(uid,articleId)){
+            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"您没有收藏");
         }
-        return favMapper.findTypeByUid(user.getId());
+        favMapper.deleteFav(uid,articleId);
+        return 1;
+    }
+
+  public List<Fav> getFavesByUserName(int pageNum,int pageSize, int uid)throws Exception {
+      checkUid(uid);
+      PageHelper.startPage(pageNum,pageSize);
+      return favMapper.findFavesByUid(uid);
+  }
+
+    public List<User> getFavesByArticle(int pageNum,int pageSize,int articleId)throws Exception {
+
+        PageHelper.startPage(pageNum,pageSize);
+        List<Integer> userIDs =  favMapper.getFavByArticleId(articleId);
+        List<User> users = new ArrayList<>();
+        for(Integer uid :userIDs){
+            users.add(userMapper.findById(uid));
+        }
+        return users;
+    }
+
+    public Integer getFavCountByArticle(int articleId)throws Exception {
+
+       return favMapper.getFavCountByarticleId(articleId);
+    }
+
+    public boolean isCheckFav(int uid,int articleId){
+        return favMapper.checkFavByUid(uid,articleId) >0;
     }
 
 
+
+    private void checkUid(int uid) throws Exception{
+
+        int count = userMapper.isCheckUserID(uid);
+        if (count == 0){
+            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该用户");
+        }
+    }
 }

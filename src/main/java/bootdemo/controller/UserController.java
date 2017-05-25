@@ -19,7 +19,7 @@ public class UserController {
 
 
 
-    @RequestMapping(value = "register",method = RequestMethod.POST)
+    @RequestMapping(value = "reg",method = RequestMethod.POST)
     public Result register(@RequestParam(value = "userName") String userName, @RequestParam(value = "password") String password) throws Exception{
         return ResultUtils.getSuccessResult(service.register(userName,password));
     }

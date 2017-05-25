@@ -2,13 +2,18 @@ package bootdemo.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import java.sql.Date;
+import java.io.Serializable;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by huang on 2017/5/21.
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-public class Article{
+public class Article implements Serializable{
+
+    private static final long serialVersionUID = -8830450159102461827L;
     private int id;
     private User user;
     private String title;
@@ -17,8 +22,10 @@ public class Article{
     private String content;
     private Date createTime;
     private ArticleType type;
-
-
+    private int favCount;
+    private int commentCount;
+    private List<Comment> comments;
+    private  int like;
 
     public int getId() {
         return id;
@@ -85,5 +92,35 @@ public class Article{
         this.user = user;
     }
 
+    public int getFavCount() {
+        return favCount;
+    }
 
+    public void setFavCount(int favCount) {
+        this.favCount = favCount;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public int getLike() {
+        return like;
+    }
+
+    public void setLike(int like) {
+        this.like = like;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
 }

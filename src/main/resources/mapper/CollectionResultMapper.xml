@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bootdemo.dao.CollectionMapper">
+
+    <resultMap id="CollectionResult" type="bootdemo.entity.TCollection">
+        <id property="id" column="id" />
+        <association property="article" column="articleID" select="bootdemo.dao.ArticleMapper.findById" />
+        <association property="type" column="typeID" select="bootdemo.dao.CollectionMapper.findTypeById" />
+    </resultMap>
+
+    <resultMap id="CollectionTypeResult" type="bootdemo.entity.CollectionType">
+        <id property="id" column="id" />
+        <association property="user" column="uid" select="bootdemo.dao.UserMapper.findById" />
+    </resultMap>
+</mapper>

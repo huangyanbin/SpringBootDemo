@@ -21,7 +21,7 @@ public class ResultUtils {
     public static Result getSuccessResult(Object object){
         Result result = new Result();
         result.setCode(ResultCode.SUC);
-        result.setResult("成功");
+        result.setResult("返回成功");
         result.setData(object);
         return result;
     }

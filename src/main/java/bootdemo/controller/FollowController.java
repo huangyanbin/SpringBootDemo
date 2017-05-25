@@ -23,22 +23,22 @@ public class FollowController {
 
 
     @RequestMapping(value = "add")
-    public Result addFollow(@RequestParam(value = "userName") String userName,@RequestParam(value = "follow") String followName) throws Exception{
-        return ResultUtils.getSuccessResult(service.follow(userName,followName));
+    public Result addFollow(@RequestParam(value = "uid") int uid,@RequestParam(value = "follow") int follow) throws Exception{
+        return ResultUtils.getSuccessResult(service.follow(uid,follow));
     }
 
     @RequestMapping(value = "del")
-    public Result cancel(@RequestParam(value = "userName") String userName, @RequestParam(value = "follow") String followName) throws Exception{
-        return ResultUtils.getSuccessResult(service.cancelFollow(userName,followName));
+    public Result cancel(@RequestParam(value = "uid") int uid, @RequestParam(value = "follow") int follow) throws Exception{
+        return ResultUtils.getSuccessResult(service.cancelFollow(uid,follow));
     }
 
-    @RequestMapping(value = "all/ing")
-    public Result getFollowing(@RequestParam(value = "userName") String userName) throws Exception{
-        return ResultUtils.getSuccessResult(service.getAllFollowing(userName));
+    @RequestMapping(value = "list/ing")
+    public Result getFollowing(@RequestParam(value = "uid") int uid) throws Exception{
+        return ResultUtils.getSuccessResult(service.getAllFollowing(uid));
     }
 
-    @RequestMapping(value = "all/ed")
-    public Result getFollowed(@RequestParam(value = "userName") String userName) throws Exception{
-        return ResultUtils.getSuccessResult(service.getAllFollowed(userName));
+    @RequestMapping(value = "list/ed")
+    public Result getFollowed(@RequestParam(value = "uid") int uid) throws Exception{
+        return ResultUtils.getSuccessResult(service.getAllFollowed(uid));
     }
 }

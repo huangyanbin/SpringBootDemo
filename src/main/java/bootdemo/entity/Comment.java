@@ -2,17 +2,19 @@ package bootdemo.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by David on 2017/5/23.
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-public class Comment {
+public class Comment implements Serializable{
 
+    private static final long serialVersionUID = -669130611940928240L;
     private int id;
-    private int uid;
-    private int articleID;
+    private User user;
+    private Article article;
     private String content;
     private Date commitTime;
 
@@ -24,20 +26,20 @@ public class Comment {
         this.id = id;
     }
 
-    public int getUid() {
-        return uid;
+    public User getUser() {
+        return user;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getArticleID() {
-        return articleID;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticleID(int articleID) {
-        this.articleID = articleID;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
     public String getContent() {

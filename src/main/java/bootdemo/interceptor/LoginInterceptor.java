@@ -18,19 +18,23 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     private final static String SECRET_KEY = "secretKey";
-    private final static String uid ="uid";
+    private final static String UID ="uid";
 
     @Autowired
     private UserService service;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String secretKey = request.getParameter(SECRET_KEY);
-        String userName = request.getParameter(uid);
-        if(!StringUtils.isEmpty(secretKey) && !StringUtils.isEmpty(userName)){
-            String realKey = service.getSecretKey(userName);
-            if(realKey != null && realKey.equals(secretKey)){
-                return true;
+        try {
+            int uid = Integer.parseInt(request.getParameter(UID));
+            if(!StringUtils.isEmpty(secretKey)){
+                String realKey = service.getSecretKey(uid);
+                if(realKey != null && realKey.equals(secretKey)){
+                    return true;
+                }
             }
+        }catch (Exception ignore){
+
         }
         throw new ResultException(ResultCode.SECRET_KEY_ERROR,"密钥错误，请重新登录");
 

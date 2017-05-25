@@ -6,13 +6,10 @@ import bootdemo.entity.Follow;
 import bootdemo.entity.ResultCode;
 import bootdemo.entity.User;
 import bootdemo.exception.ResultException;
-import bootdemo.utils.AESUtils;
-import bootdemo.utils.PatternUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +25,9 @@ public class FollowService {
     private FollowMapper followMapper;
 
 
-   public Follow follow(String following,String followed) throws Exception{
-       User followingUser = userMapper.findByUserName(following);
-       User followedUser = userMapper.findByUserName(followed);
+   public int follow(int following,int followed) throws Exception{
+       User followingUser = userMapper.findById(following);
+       User followedUser = userMapper.findById(followed);
        if(followedUser == null){
            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"无法关注该用户");
        }
@@ -42,13 +39,13 @@ public class FollowService {
        follow.setFollowedUser(followedUser);
        follow.setFollowTime(new Date(System.currentTimeMillis()));
        followMapper.addFollow(follow);
-      return  follow;
+      return  1;
    }
 
 
-    public int cancelFollow(String following,String followed){
-       User followingUser = userMapper.findByUserName(following);
-       User followedUser = userMapper.findByUserName(followed);
+    public int cancelFollow(int following,int followed){
+        User followingUser = userMapper.findById(following);
+        User followedUser = userMapper.findById(followed);
        if(followedUser == null){
            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"无法取消关注该用户");
        }
@@ -68,9 +65,9 @@ public class FollowService {
      * 查找关注自己的人
      * @return
      */
-    public List<User> getAllFollowing(String followed){
-        User followedUser = userMapper.findByUserName(followed);
-        List<Integer> userIDs =  followMapper.findFollowing(followedUser.getId());
+    public List<User> getAllFollowing(int followed)throws Exception{
+        checkUid(followed);
+        List<Integer> userIDs =  followMapper.findFollowing(followed);
         List<User> users = new ArrayList<>();
         for(Integer uid :userIDs){
             users.add(userMapper.findById(uid));
@@ -82,14 +79,22 @@ public class FollowService {
      * 查找自己关注的人
      * @return
      */
-    public List<User> getAllFollowed(String following){
-
-        User followingUser = userMapper.findByUserName(following);
+    public List<User> getAllFollowed(int following) throws Exception{
+        checkUid(following);
+        User followingUser = userMapper.findById(following);
         List<Integer> userIDs =  followMapper.findFollowed(followingUser.getId());
         List<User> users = new ArrayList<>();
         for(Integer uid :userIDs){
             users.add(userMapper.findById(uid));
         }
         return users;
+    }
+
+    private void checkUid(int uid) throws Exception{
+
+        int count = userMapper.isCheckUserID(uid);
+        if (count == 0){
+            throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该用户");
+        }
     }
 }

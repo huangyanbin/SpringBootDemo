@@ -1,14 +1,16 @@
 package bootdemo.entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  * Created by David on 2017/5/23.
  */
-public class Share {
+public class Share implements Serializable {
+    private static final long serialVersionUID = -8003857283929008235L;
     private int id;
     private int uid;
-    private int articleID ;
+    private int articleID;
     private Date shareTime;
 
     public int getId() {

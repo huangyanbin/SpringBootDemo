@@ -1,12 +1,14 @@
 package bootdemo.entity;
 
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by David on 2017/5/23.
  */
-public class ArticleType {
+public class ArticleType implements Serializable{
 
+    private static final long serialVersionUID = -5800925454234667282L;
     private int id;
     private String title;
     private Date createTime;
