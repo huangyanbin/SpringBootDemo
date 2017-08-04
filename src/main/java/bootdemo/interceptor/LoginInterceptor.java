@@ -1,15 +1,13 @@
 package bootdemo.interceptor;
 
-import bootdemo.entity.ResultCode;
-import bootdemo.exception.ResultException;
 import bootdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by David on 2017/5/23.
@@ -17,27 +15,20 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
-    private final static String SECRET_KEY = "secretKey";
-    private final static String UID ="uid";
+    //public final static String SECRET_KEY = "secretKey";
+    //private final static String UID ="uid";
 
     @Autowired
     private UserService service;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String secretKey = request.getParameter(SECRET_KEY);
-        try {
-            int uid = Integer.parseInt(request.getParameter(UID));
-            if(!StringUtils.isEmpty(secretKey)){
-                String realKey = service.getSecretKey(uid);
-                if(realKey != null && realKey.equals(secretKey)){
-                    return true;
-                }
-            }
-        }catch (Exception ignore){
-
-        }
-        throw new ResultException(ResultCode.SECRET_KEY_ERROR,"密钥错误，请重新登录");
-
+        HttpSession session = request.getSession();
+        if (session.getAttribute("User") != null)
+            return true;
+        // 跳转登录
+        String url = "/login";
+        response.sendRedirect(url);
+        return false;
     }
 
 

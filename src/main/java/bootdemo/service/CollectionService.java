@@ -29,7 +29,7 @@ public class CollectionService {
     @Autowired
     private ArticleMapper articleMapper;
 
-    @CacheEvict(value = "getCollectionTypeByUserId",allEntries = true)
+    //@CacheEvict(value = "getCollectionTypeByUserId",allEntries = true)
     public CollectionType saveCollectionType(int uid, String collectionTypeName)throws Exception{
         checkUid(uid);
         CollectionType collectionType = new CollectionType();
@@ -38,7 +38,7 @@ public class CollectionService {
         collectionMapper.saveCollectionType(collectionType);
         return collectionType;
     }
-    @CacheEvict(value = "getCollectionByTypeID",allEntries = true)
+   // @CacheEvict(value = "getCollectionByTypeID",allEntries = true)
     public TCollection saveCollection(int collectionTypeID, int articleId)throws Exception{
         CollectionType collectionType = collectionMapper.findTypeById(collectionTypeID);
         if(collectionType == null){
@@ -55,12 +55,12 @@ public class CollectionService {
         collectionMapper.saveCollection(collection);
         return collection;
     }
-    @Cacheable(value = "getCollectionByTypeID")
+   // @Cacheable(value = "getCollectionByTypeID")
   public List<TCollection> getCollectionByTypeID(int pageNum, int pageSize, int collectionTypeID)throws Exception {
       PageHelper.startPage(pageNum,pageSize);
       return collectionMapper.findCollectionsByType(collectionTypeID);
   }
-    @Cacheable(value = "getCollectionTypeByUserId")
+ //   @Cacheable(value = "getCollectionTypeByUserId")
     public List<CollectionType> getCollectionTypeByUserId(int uid)throws Exception {
         checkUid(uid);
         return collectionMapper.findTypeByUid(uid);

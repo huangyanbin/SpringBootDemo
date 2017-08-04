@@ -32,7 +32,7 @@ public class ArticleService {
 
     @Autowired
     private CommentMapper commentMapper;
-    @Cacheable(value = "getAllArticles")
+    //@Cacheable(value = "getAllArticles")
     public List<Article> getAllArticles(int pageNum,int pageSize,int uid){
         PageHelper.startPage(pageNum,pageSize);
         List<Article> articles =  articleMapper.queryAll();
@@ -49,7 +49,7 @@ public class ArticleService {
          }
          return articles;
     }
-    @CacheEvict(value = "getAllArticles",allEntries = true)
+    //@CacheEvict(value = "getAllArticles",allEntries = true)
     public Article saveArticle(Article article,int uid,int typeId)throws Exception{
         checkUid(uid);
         if(StringUtils.isEmpty(article.getTitle())){
@@ -59,6 +59,9 @@ public class ArticleService {
         if(articleType == null){
             throw new ResultException(ResultCode.DATA_EMPTY_ERROR,"没有该文章分类！");
         }
+        User user = new User();
+        user.setId(uid);
+        article.setUser(user);
         article.setType(articleType);
         article.setCreateTime(new Date(System.currentTimeMillis()));
         articleMapper.save(article);

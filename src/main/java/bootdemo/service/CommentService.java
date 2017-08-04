@@ -32,7 +32,7 @@ public class CommentService {
     @Autowired
     private ArticleMapper articleMapper;
 
-    @CacheEvict(value = {"getCommentsByUserName", "getCommentsByArticle", "getCommentCountByArticle"}, allEntries = true)
+   // @CacheEvict(value = {"getCommentsByUserName", "getCommentsByArticle", "getCommentCountByArticle"}, allEntries = true)
     public Comment saveComment(int uid, String content, int articleId) throws Exception {
         checkUid(uid);
         Article article = articleMapper.findById(articleId);
@@ -43,25 +43,28 @@ public class CommentService {
         comment.setCommitTime(new Date(System.currentTimeMillis()));
         comment.setArticle(article);
         comment.setContent(content);
+        User user = new User();
+        user.setId(uid);
+        comment.setUser(user);
         commentMapper.saveComment(comment);
         return comment;
     }
 
-    @CacheEvict(value = {"getCommentsByUserName", "getCommentsByArticle", "getCommentCountByArticle"}, allEntries = true)
+    //@CacheEvict(value = {"getCommentsByUserName", "getCommentsByArticle", "getCommentCountByArticle"}, allEntries = true)
     public int deleteComment(int uid, int commentId)throws Exception {
         checkUid(uid);
         commentMapper.deleteComment(commentId, uid);
         return 1;
     }
 
-    @Cacheable(value = "getCommentsByUserName")
+    //@Cacheable(value = "getCommentsByUserName")
     public List<Comment> getCommentsByUserName(int pageNum, int pageSize, int uid) throws Exception {
         checkUid(uid);
         PageHelper.startPage(pageNum, pageSize);
         return commentMapper.findCommentsByUid(uid);
     }
 
-    @Cacheable(value = "getCommentsByArticle")
+   // @Cacheable(value = "getCommentsByArticle")
     public List<Comment> getCommentsByArticle(int pageNum, int pageSize, int articleId) throws Exception {
 
         PageHelper.startPage(pageNum, pageSize);
@@ -69,7 +72,7 @@ public class CommentService {
         return comments;
     }
 
-    @Cacheable(value = "getCommentCountByArticle")
+   // @Cacheable(value = "getCommentCountByArticle")
     public Integer getCommentCountByArticle(int articleId) throws Exception {
 
         return commentMapper.getCommentCountByArticleId(articleId);

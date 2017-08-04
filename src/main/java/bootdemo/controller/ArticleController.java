@@ -6,10 +6,7 @@ import bootdemo.entity.Result;
 import bootdemo.service.ArticleService;
 import bootdemo.utils.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by huang on 2017/5/21.
@@ -26,7 +23,7 @@ public class ArticleController {
         return ResultUtils.getSuccessResult(service.getAllArticles(pageNum,pageSize,uid));
     }
 
-    @RequestMapping(value = "add")
+    @RequestMapping(value = "add",method = RequestMethod.POST)
     public Result addArticle(Article article, @RequestParam(value = "uid")int uid,@RequestParam(value = "typeId") int  typeId) throws Exception{
         return ResultUtils.getSuccessResult(service.saveArticle(article,uid,typeId));
     }

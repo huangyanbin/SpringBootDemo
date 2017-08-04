@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * Created by David on 2017/5/23.
  */
 @Configuration
-@EnableWebMvc
+//@EnableWebMvc
 @ComponentScan(basePackages = "bootdemo")
 @PropertySource(value = "classpath:application.properties",
         ignoreResourceNotFound = true,encoding = "UTF-8")
@@ -26,6 +26,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
         registry.addInterceptor(interceptor)
-                .addPathPatterns("/user/update");
+        // 排除配置
+        .excludePathPatterns("/error")
+        .excludePathPatterns("/login**")
+         .excludePathPatterns("/user/login**")
+         .excludePathPatterns("/artAdd")
+        // 拦截配置
+        .addPathPatterns("/**");
     }
 }
