@@ -6,6 +6,7 @@
 > * 生成json数据，增加Result结果封装
 > * 分别使用了Hibernate，mybatis。数据库mysql
 > * 全局拦截，过滤
+> * redius 缓存
 > * 使用freemaker编写网页
 > * 尝试写了table.js，根据json返回数据自动生成bootStrap样式表格
 根据返回数据自动填充div。
